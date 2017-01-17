@@ -1,20 +1,19 @@
 {% load bootstrap3 %}
+{% load staticfiles %}
 <html>
 
 <head>
     <title>{% block title %}MJournal{% endblock %}</title>
-    {% bootstrap_css %}
-    {# TODO: Fix this link rel with django-bootstrap3 update #}
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/{% bootstrap_theme_url %}" rel="stylesheet">
-    {% block media %}
 
+
+    {% block media %}
+        {% bootstrap_css %}
+        {# TODO: Fix this link rel with django-bootstrap3 update #}
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/{% bootstrap_theme_url %}" rel="stylesheet">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        {% bootstrap_javascript %}
+        <link href="{% static 'main/css/main.css' %}" rel="stylesheet">
     {% endblock %}
-    {% bootstrap_javascript %}
-    <style>
-        #main-content {
-            margin-top: 100px;
-        }
-    </style>
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -37,7 +36,8 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'accounts.logout' %}"><span class="glyphicon glyphicon-log-out"></span> {{ user }}</a></li>
+                    <li><a href="{% url 'accounts.logout' %}"><span
+                            class="glyphicon glyphicon-log-out"></span> {{ user }}</a></li>
                 </ul>
             {% endif %}
         </div>

@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 {% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block media %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'main/css/bootstrap-datetimepicker.min.css' %}"/>
+    <script src="{% static 'main/js/moment.js' %}"></script>
+    <script src="{% static 'main/js/bootstrap-datetimepicker.min.js' %}"></script>
+
+{% endblock %}
 
 {% block content %}
     <form action="" method="post" class="form">
@@ -7,8 +16,17 @@
         {% bootstrap_form form %}
         {% buttons %}
             <button type="submit" class="btn btn-primary">
-                Log in
+                Submit
             </button>
         {% endbuttons %}
     </form>
+    <script type="text/javascript">
+        $(function () {
+            $('#maintenance_date_picker').datetimepicker({
+                'inline': true,
+                'sideBySide': true,
+                'format': 'YYYY-MM-DD HH:mm:ss'
+            });
+        });
+    </script>
 {% endblock %}
