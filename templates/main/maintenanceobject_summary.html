@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+
+{% block content %}
+    <div class="row">
+        {% include "main/maintenanceobject/breadcrumbs.html" with current_page=None %}
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>{{ object.title }}</h1>
+            <p>
+                {{ object.description }}
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Pending events</div>
+                    <div class="panel-body">
+                        {% include "main/maintenanceobject/pending_links.html" %}
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Log</div>
+                    <div class="panel-body">
+                        {% include "main/maintenanceobject/related_events.html" %}
+                        {% url 'main.events-add' object_id=object.id as add_url %}
+                        {% bootstrap_button "Add" button_class="btn-primary" href=add_url %}
+                        {% url 'main.events-list' object_id=object.id as events_list_url %}
+                        {% bootstrap_button "Show more" button_class="btn-primary" href=events_list_url %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">Nested objects</div>
+                <div class="panel-body">
+                    {% include "main/maintenanceobject/nested_objects.html" %}
+                    {% url 'main.nested-objects-list' parent_id=object.id as nested_objects_url %}
+                    {% bootstrap_button "Show more" button_class="btn-primary" href=nested_objects_url %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+
+    </div>
+
+{% endblock %}

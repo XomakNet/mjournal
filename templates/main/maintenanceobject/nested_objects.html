@@ -1,0 +1,30 @@
+{% load bootstrap3 %}
+
+
+<table class="table">
+    <tr>
+        <th>#</th>
+        <th>Title</th>
+        {% if verbose %}
+            <th>Description</th>
+        {% endif %}
+    </tr>
+    {% for nested_object in nested_objects %}
+        <tr>
+            <td>
+                {{ nested_object.id }}
+            </td>
+            <td>
+                {% url 'main.object-summary' object_id=nested_object.id as object_url %}
+                <a href="{{ object_url }}">{{ nested_object.title }}</a>
+            </td>
+            {% if verbose %}
+                <td>
+                    {{ nested_object.description }}
+                </td>
+            {% endif %}
+
+        </tr>
+
+    {% endfor %}
+</table>

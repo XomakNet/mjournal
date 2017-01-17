@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+
+{% block content %}
+    {% if object %}
+        {% include "main/maintenanceobject/breadcrumbs.html" with current_page="Nested objects" %}
+    {% else %}
+        {% include "main/maintenanceobject/breadcrumbs.html" with current_page=None %}
+    {% endif %}
+    {% include "main/maintenanceobject/nested_objects.html" with verbose=True %}
+
+{% endblock %}

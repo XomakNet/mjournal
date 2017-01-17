@@ -1,0 +1,37 @@
+{% load bootstrap3 %}
+
+<table class="table">
+    <tr>
+        <th>Due date</th>
+        <th>Object</th>
+        <th>Event</th>
+        <th>Last event</th>
+    </tr>
+    {% for event in pending_links %}
+        <tr{% if event.due_date < now %} class="bg-danger"{% elif not event.due_date %} class="bg-warning"{% endif %}>
+            <td {% if event.due_date < now %}class="text-danger"{% endif %}>
+                {% if event.due_date %}
+                    {{ event.due_date|date:"d.m.Y H:i:s" }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+            <td>
+                {% url 'main.object-summary' object_id=event.maintenance_object.id as object_url %}
+                <a href="{{ object_url }}">{{ event.maintenance_object.title }}</a>
+            </td>
+            <td>
+                {{ event.maintenance_type.title }}
+            </td>
+            <td>
+
+                {% if event.last_date %}
+                    {{ event.last_date|date:"d.m.Y H:i:s" }}
+                {% else %}
+                    Not commited
+                {% endif %}
+            </td>
+        </tr>
+
+    {% endfor %}
+</table>

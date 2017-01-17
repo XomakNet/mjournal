@@ -1,0 +1,42 @@
+{% load bootstrap3 %}
+
+<table class="table">
+    <tr>
+        <th>Actions</th>
+        <th>#</th>
+        <th>Datetime</th>
+        <th>Object</th>
+        <th>Event</th>
+        {% if verbose %}
+            <th>Comment</th>
+        {% endif %}
+    </tr>
+    {% for event in related_events %}
+        <tr>
+            <td>
+                <a href="{% url 'main.events-edit' event_id=event.id %}">{% bootstrap_icon "edit" %}</a>
+                <a href="{% url 'main.events-delete' event_id=event.id %}">{% bootstrap_icon "remove" %}</a>
+            </td>
+            <td>
+                {{ event.id }}
+            </td>
+            <td>
+                {{ event.maintenance_date|date:"d.m.Y H:i:s" }}
+            </td>
+            <td>
+                {% url 'main.object-summary' object_id=event.maintenance_object.id as object_url %}
+                <a href="{{ object_url }}">{{ event.maintenance_object.title }}</a>
+            </td>
+            <td>
+                {{ event.maintenance_type.title }}
+            </td>
+            {% if verbose %}
+                <td>
+                    {{ event.maintenance_type.comment }}
+                </td>
+            {% endif %}
+
+        </tr>
+
+    {% endfor %}
+</table>

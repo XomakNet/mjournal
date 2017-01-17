@@ -1,0 +1,17 @@
+<ol class="breadcrumb">
+    <li><a href="{% url 'main.top-objects-list' %}">Maintenance objects</a></li>
+    {% for breadcrumb in breadcrumbs %}
+        {% url 'main.object-summary' object_id=breadcrumb.id as breadcrumb_url %}
+        {% if current_page or not forloop.last %}
+            <li><a href="{{ breadcrumb_url }}">{{ breadcrumb.title }}</a></li>
+        {% else %}
+            <li class="active">
+                {{ breadcrumb.title }}
+            </li>
+        {% endif %}
+
+    {% endfor %}
+    {% if current_page %}
+        <li class="active">{{ current_page }}</li>
+    {% endif %}
+</ol>
