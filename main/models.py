@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from django.db import models
 from django.db.models import Manager
+from django.db import models
 
 
 class MaintenanceLinkManager(Manager):
@@ -71,7 +71,7 @@ class MaintenanceObject(models.Model):
     """
 
     title = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     parent = models.ForeignKey("self", blank=True, null=True)
 
     def __str__(self):
@@ -147,6 +147,9 @@ class MaintenanceLink(models.Model):
     maintenance_object = models.ForeignKey(MaintenanceObject, related_name="links")
     maintenance_type = models.ForeignKey(MaintenanceType, related_name="links")
     periodicity = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        unique_together = ("maintenance_object", "maintenance_type")
 
     objects = MaintenanceLinkManager()
 

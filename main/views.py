@@ -156,17 +156,20 @@ class MaintenanceEventForm(FormView):
 
     def __init__(self):
         self.event = None
+        self.object = None
         super(FormView, self).__init__()
 
     def dispatch(self, request, *args, **kwargs):
         if 'object_id' in self.kwargs:
-            maintenance_object = MaintenanceObject.objects.filter(pk=self.kwargs['object_id'])
-            if maintenance_object.count() != 1:
+            try:
+                self.object = MaintenanceObject.objects.get(pk=self.kwargs['object_id'])
+            except ObjectDoesNotExist:
                 raise Http404("Object not found")
 
         if 'event_id' in self.kwargs:
             try:
                 self.event = MaintenanceEvent.objects.get(pk=self.kwargs['event_id'])
+                self.object = self.event.maintenance_object
             except ObjectDoesNotExist:
                 raise Http404("Object does not exist")
 
@@ -185,12 +188,13 @@ class MaintenanceEventForm(FormView):
 
         form.fields['maintenance_type'].queryset = MaintenanceType.objects \
             .filter(links__maintenance_object=self.object.id)
+        form.fields['maintenance_date'].attributes = {'data-provide': 'datepicker'}
         return form
 
     def form_valid(self, form):
         if not self.event:
             new_event = form.save(commit=False)
-            new_event.maintenance_object_id = self.object_id
+            new_event.maintenance_object_id = self.object.id
             new_event.save()
         else:
             form.save()
